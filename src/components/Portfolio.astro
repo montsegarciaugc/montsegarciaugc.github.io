@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import VideoCard from './VideoCard.astro';
 interface Props { lang: 'es' | 'en' }
 const { lang } = Astro.props;
 const t = (es: string, en: string) => lang === 'es' ? es : en;
@@ -28,10 +29,10 @@ const steps = [
 const beautyPoints = [t('Conocimiento de producto','Product knowledge'),t('Creación de contenido para redes sociales','Social media content creation'),t('Comunicación cercana y auténtica','Relatable, authentic communication'),t('Enfoque en resultados','A focus on results')];
 const value = [t('Contenido natural y auténtico que conecta con tu audiencia','Natural, authentic content that connects with your audience'),t('Ideas creativas adaptadas a tus objetivos','Creative ideas tailored to your goals'),t('Vídeos optimizados para Reels, TikTok y anuncios','Videos optimized for Reels, TikTok and ads'),t('Entrega profesional, rápida y comunicativa','Professional, prompt delivery and clear communication'),t('Enfoque en resultados y aumento de conversiones','A focus on results and increasing conversions')];
 const examples = [
- {image:'sample-beauty',category:t('Belleza','Beauty'),format:t('Vídeo demo','Demo video'),video:'perfume-joy'},
+ {image:'sample-beauty',category:t('Belleza','Beauty'),format:t('Contenido para Ads','Ad content'),video:'perfume-joy',poster:'perfume-poster'},
  {image:'sample-coffee',category:t('Café','Coffee'),format:t('Vídeo review','Review video')},
- {image:'sample-food',category:t('Comida','Food'),format:t('Receta','Recipe')},
- {image:'sample-fashion',category:t('Moda','Fashion'),format:t('Reel de moda','Fashion reel'),video:'fashion'},
+ {image:'sample-food',category:t('Comida','Food'),format:t('Probando comida','Food tasting'),video:'testing-food',poster:'food-poster'},
+ {image:'sample-fashion',category:t('Moda','Fashion'),format:t('Reel de moda','Fashion reel'),video:'fashion',poster:'fashion-poster'},
 ];
 const moreExamples = [{image:'niche-travel',category:t('Viajes','Travel')},{image:'niche-car',category:t('Accesorios de coche','Car accessories')},{image:'niche-lifestyle',category:t('Estilo de vida','Lifestyle')},{image:'niche-tech',category:t('Tecnología','Tech')}];
 const logoAlt = 'Montse García · UGC Creator';
@@ -81,7 +82,7 @@ const logoAlt = 'Montse García · UGC Creator';
    </section>
    <section id="ugc" class="section split ugc">
     <div><p class="eyebrow">02 / {t('Conexión real','Real connection')}</p><h2>{t('¿QUÉ ES EL','WHAT IS')} <em>UGC?</em></h2><p>{t('El User Generated Content es contenido creado por personas reales para que las marcas puedan mostrar sus productos de una forma natural, cercana y auténtica.','User Generated Content is content created by real people so brands can showcase their products in a natural, relatable and authentic way.')}</p><h3 class="pink">{t('¿POR QUÉ FUNCIONA?','WHY DOES IT WORK?')}</h3><ul class="checklist">{reasons.map(reason=><li>{reason}</li>)}</ul></div>
-    <div class="phone-wrap"><div class="phone"><video controls playsinline preload="none" poster={asset('perfume-poster.webp')} aria-label={t('Vídeo UGC del perfume Joy de Mary Kay','UGC video featuring Mary Kay Joy perfume')}><source src={asset('perfume-joy.mp4')} type="video/mp4" /></video></div><span class="floating-heart" aria-hidden="true">♡</span></div>
+    <div class="featured-video"><VideoCard src={asset('perfume-joy.mp4')} poster={asset('perfume-poster.webp')} label={t('Perfume Joy de Mary Kay','Mary Kay Joy perfume')} lang={lang} /></div>
    </section>
    <section id="niches" class="section centered">
     <p class="eyebrow">03 / {t('Mi universo creativo','My creative world')}</p><h2>{t('NICHOS EN LOS QUE','NICHES I CREATE')}<em>{t('creo contenido','content for')}</em></h2>
@@ -99,7 +100,7 @@ const logoAlt = 'Montse García · UGC Creator';
    </section>
    <section id="work" class="section work centered">
     <p class="eyebrow">06 / {t('Portfolio','Portfolio')}</p><h2>{t('ALGUNOS EJEMPLOS','A FEW EXAMPLES')}<em>{t('de contenido','of my content')}</em></h2>
-    <div class="examples">{examples.map(example=><article class="example">{example.video ? <div class="video-card"><video controls playsinline preload="none" poster={asset(`${example.video==='perfume-joy'?'perfume-poster':'fashion-poster'}.webp`)} aria-label={`${example.category} · ${example.format}`}><source src={asset(`${example.video}.mp4`)} type="video/mp4" /></video></div> : <button class="image-preview" data-image={asset(`${example.image}.webp`)} data-caption={`${example.category} · ${example.format}`} aria-label={t(`Ampliar fotografía de ${example.category.toLowerCase()}`,`Enlarge ${example.category.toLowerCase()} photograph`)}><img src={asset(`${example.image}.webp`)} alt={example.category} loading="lazy" width="390" height="405" /><span aria-hidden="true">↗</span></button>}<div class="example-caption"><h3>{example.category}</h3><p>{example.format}</p></div></article>)}</div>
+    <div class="examples">{examples.map(example=><article class="example">{example.video ? <VideoCard src={asset(`${example.video}.mp4`)} poster={asset(`${example.poster}.webp`)} label={`${example.category} · ${example.format}`} lang={lang} /> : <button class="image-preview" data-image={asset(`${example.image}.webp`)} data-caption={`${example.category} · ${example.format}`} aria-label={t(`Ampliar fotografía de ${example.category.toLowerCase()}`,`Enlarge ${example.category.toLowerCase()} photograph`)}><img src={asset(`${example.image}.webp`)} alt={example.category} loading="lazy" width="390" height="405" /><span aria-hidden="true">↗</span></button>}<div class="example-caption"><h3>{example.category}</h3><p>{example.format}</p></div></article>)}</div>
     <p class="ribbon">{t('Contenido de muestra creado para demostrar estilo, creatividad y enfoque en resultados.','Sample content created to showcase style, creativity and a focus on results.')}</p>
    </section>
    <section id="more-work" class="section work centered">
@@ -113,7 +114,7 @@ const logoAlt = 'Montse García · UGC Creator';
    </section>
    <section id="value" class="section split value">
     <div><p class="eyebrow">09 / {t('Tu marca, mi enfoque','Your brand, my approach')}</p><h2>{t('¿QUÉ PUEDO APORTAR','WHAT CAN I BRING')}<em>{t('a tu marca?','to your brand?')}</em></h2><ul class="value-list">{value.map((item,i)=><li><span aria-hidden="true">{['♡','✧','▷','◎','↗'][i]}</span>{item}</li>)}</ul></div>
-    <img class="phone-photo" src={asset('phone.webp')} alt={t('Mockup de un móvil grabando productos de belleza','Phone mockup filming beauty products')} loading="lazy" width="390" height="878" />
+    <div class="featured-video"><VideoCard src={asset('testing-food.mp4')} poster={asset('food-poster.webp')} label={t('Contenido UGC probando comida','Food tasting UGC content')} lang={lang} /></div>
    </section>
    <section id="brands" class="section brands">
     <div class="split"><div><p class="eyebrow">10 / {t('Marcas','Brands')}</p><h2>{t('MARCAS CON LAS QUE','BRANDS I HAVE')}<em>{t('he trabajado','worked with')}</em></h2><div class="brand-seal">MARY<br />KAY</div><p>{t('Gracias a mi experiencia como consultora, conozco a fondo la marca y sus productos, creando contenido que transmite confianza y destaca sus beneficios.','Through my experience as a consultant, I know the brand and its products in depth, creating content that builds trust and highlights their benefits.')}</p></div><img class="editorial-photo" src={asset('brand.webp')} alt={t('Colección de productos Mary Kay','Collection of Mary Kay products')} loading="lazy" width="892" height="766" /></div>
@@ -151,9 +152,6 @@ const logoAlt = 'Montse García · UGC Creator';
    });
    dialog?.querySelector('button')?.addEventListener('click', () => dialog.close());
    dialog?.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
-   document.querySelectorAll('video').forEach(video => {
-    video.addEventListener('play', () => document.querySelectorAll('video').forEach(other => { if(other !== video) other.pause(); }));
-   });
   </script>
  </body>
 </html>

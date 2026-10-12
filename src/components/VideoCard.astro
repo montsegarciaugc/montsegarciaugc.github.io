@@ -1,0 +1,62 @@
+---
+import '../styles/video.css';
+interface Props {
+  src: string;
+  poster: string;
+  label: string;
+  lang: 'es' | 'en';
+}
+const { src, poster, label, lang } = Astro.props;
+const playLabel = `${lang === 'es' ? 'Reproducir' : 'Play'}: ${label}`;
+const pauseLabel = `${lang === 'es' ? 'Pausar' : 'Pause'}: ${label}`;
+---
+<div class="video-card" data-video-card>
+  <video playsinline preload="none" poster={poster} aria-label={label}>
+    <source src={src} type="video/mp4" />
+  </video>
+  <button
+    class="video-toggle"
+    type="button"
+    aria-label={playLabel}
+    aria-pressed="false"
+    data-play-label={playLabel}
+    data-pause-label={pauseLabel}
+  >
+    <span class="video-play" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+    </span>
+  </button>
+  <span class="video-error" role="status" hidden>{lang === 'es' ? 'No se ha podido cargar el vídeo. Pulsa para reintentarlo.' : 'The video could not load. Press to try again.'}</span>
+</div>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-video-card]').forEach(card => {
+    const video = card.querySelector('video')!;
+    const button = card.querySelector<HTMLButtonElement>('.video-toggle')!;
+    const error = card.querySelector<HTMLElement>('.video-error')!;
+    const sync = () => {
+      const playing = !video.paused && !video.ended;
+      card.classList.toggle('is-playing', playing);
+      button.setAttribute('aria-label', playing ? button.dataset.pauseLabel! : button.dataset.playLabel!);
+      button.setAttribute('aria-pressed', String(playing));
+    };
+    button.addEventListener('click', () => {
+      error.hidden = true;
+      if (!video.paused) {
+        video.pause();
+        return;
+      }
+      if (video.error) video.load();
+      document.querySelectorAll('video').forEach(other => {
+        if (other !== video) other.pause();
+      });
+      video.play().catch(reason => {
+        if (reason.name !== 'AbortError') error.hidden = false;
+        sync();
+      });
+    });
+    video.addEventListener('play', sync);
+    video.addEventListener('pause', sync);
+    video.addEventListener('ended', sync);
+    video.addEventListener('error', () => { error.hidden = false; sync(); });
+  });
+</script>

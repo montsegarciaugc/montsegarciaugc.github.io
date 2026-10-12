@@ -57,10 +57,11 @@ git push -u origin main
 
 - `src/components/Portfolio.astro`: las 15 secciones y los textos bilingües.
 - `src/styles/global.css`: paleta, tipografías y estilos adaptados a móvil.
-- `public/media/`: recursos WebP extraídos del PDF y los dos MP4 suministrados.
+- `src/components/VideoCard.astro`: reproductor en tarjeta, con play y pausa al pulsar de nuevo; sin controles nativos ni mockups.
+- `public/media/`: recursos WebP extraídos del PDF y los tres MP4 suministrados.
 - `scripts/extract-assets.py`: extracción reproducible con PyMuPDF y Pillow instalados en `.tools/python`.
 
-Se han incluido los vídeos de perfume Joy y moda. Los demás ejemplos disponibles son imágenes estáticas: no hay archivos de vídeo adicionales en el PDF ni en el ZIP. Las fotografías se pueden ampliar con ratón o teclado y cerrar con Escape.
+Se han incluido los vídeos de perfume Joy, moda y probando comida. Cada tarjeta reproduce al pulsar el play y pausa al volver a pulsar sobre el vídeo. También funciona con Enter y Espacio. Al iniciar otro vídeo, el anterior se pausa. Los demás ejemplos disponibles son imágenes estáticas. Las fotografías se pueden ampliar con ratón o teclado y cerrar con Escape.
 
 Las fuentes Playfair Display, Cormorant Garamond y Poppins se cargan desde Google Fonts. Allura aproxima la tipografía manuscrita de la referencia; no se ha suministrado el archivo de Garula. Hay fuentes de sistema de respaldo.
 
@@ -68,4 +69,4 @@ Contacto: montsegarciaugc@gmail.com. Instagram y TikTok: @montsegarcia_ugc.
 
 ## Validación
 
-Compilación de producción completada. Verificado en Edge a 1440 y 390 px en ambos idiomas: 15 secciones, imágenes cargadas, sin desbordamiento horizontal, selector de idioma que conserva la sección, ampliación de imágenes y carga de ambos vídeos.
+Compilación de producción completada para las dos ubicaciones de GitHub Pages. Verificado en Edge a 1440 y 390 px en ambos idiomas: 15 secciones, imágenes cargadas, sin desbordamiento horizontal, selector de idioma que conserva la sección, ampliación de imágenes y tres vídeos disponibles. Las tarjetas no tienen controles nativos ni marcos de móvil; play, pausa, cambio rápido entre vídeos y uso con teclado comprobados.
