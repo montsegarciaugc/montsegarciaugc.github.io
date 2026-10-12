@@ -7,151 +7,91 @@ const t = (es: string, en: string) => lang === 'es' ? es : en;
 const base = import.meta.env.BASE_URL;
 const asset = (name: string) => `${base}media/${name}`;
 const localeUrl = (locale: 'es' | 'en') => `${base}${locale === 'en' ? 'en/' : ''}`;
-const canonical = new URL(localeUrl(lang), Astro.site);
 const mail = 'mailto:montsegarciaugc@gmail.com';
 const instagram = 'https://www.instagram.com/montsegarcia_ugc/';
 const tiktok = 'https://www.tiktok.com/@montsegarcia_ugc';
-const traits = [t('Creativa','Creative'),t('Natural','Natural'),t('Detallista','Detail-oriented'),t('Orientada a resultados','Results-focused')];
-const reasons = [t('Genera confianza','Builds trust'),t('Humaniza la marca','Humanizes your brand'),t('Se adapta a TikTok, Reels y Ads','Works for TikTok, Reels and ads'),t('Muestra el producto en situaciones reales','Shows products in real-life situations'),t('Conecta con la audiencia','Connects with your audience')];
-const niches = [['beauty',t('Belleza','Beauty')],['fashion',t('Moda','Fashion')],['travel',t('Viajes','Travel')],['food',t('Comida','Food')],['coffee',t('Café','Coffee')],['tech',t('Tecnología','Tech')],['car',t('Accesorios de coche','Car accessories')],['lifestyle',t('Estilo de vida','Lifestyle')]];
+const projects = [
+  {id:'beauty',title:t('El detalle que se queda.','The detail that stays.'),category:t('Belleza','Beauty'),format:t('Contenido para Ads','Ad content'),video:'perfume-joy',poster:'perfume-poster',note:t('Un producto. Una atmósfera. Una forma de despertar curiosidad.','One product. One atmosphere. A way to spark curiosity.'),scene:t('Sentir','Feel'),sceneText:t('Hay productos que no se explican. Se sienten.','Some products are not explained. They are felt.')},
+  {id:'fashion',title:t('Un look. Otra actitud.','One look. A new attitude.'),category:t('Moda','Fashion'),format:t('Reel de moda','Fashion reel'),video:'fashion',poster:'fashion-poster',note:t('Movimiento, personalidad y una historia contada en pocos segundos.','Movement, personality and a story told in a few seconds.'),scene:t('Expresar','Express'),sceneText:t('La personalidad transforma un producto en una historia.','Personality turns a product into a story.')},
+  {id:'food',title:t('Lo real abre el apetito.','Real life sparks an appetite.'),category:t('Comida','Food'),format:t('Probando comida','Food tasting'),video:'testing-food',poster:'food-poster',note:t('Una experiencia cotidiana, contada de cerca y sin artificios.','An everyday experience, told up close and without artifice.'),scene:t('Conectar','Connect'),sceneText:t('Y lo cotidiano se convierte en una conexión real.','And everyday moments become a real connection.')},
+];
 const services = [
- {icon:'▷',title:t('Vídeos UGC','UGC videos'),items:['Unboxing',t('Demostraciones de producto','Product demos'),t('Testimonios','Testimonials'),'Reviews',t('Tutoriales','Tutorials'),'Voice-over',t('Problema – solución','Problem – solution'),'Lifestyle',t('Contenido para anuncios','Ad content')]},
- {icon:'◎',title:t('Fotografía UGC','UGC photography'),items:[t('Fotos de producto','Product photography'),'Lifestyle',t('Producto en uso','Products in use'),t('Detalles','Details'),t('Composiciones estéticas','Styled compositions')]},
- {icon:'▯',title:t('Contenido para redes','Social media content'),items:['Reels','TikToks','Stories',t('Contenido para anuncios','Ad content')]}
+  {name:t('Vídeo que se siente.','Video you can feel.'),description:t('UGC para Reels, TikTok y Ads. Demos, reviews, unboxing, tutoriales y contenido lifestyle.','UGC for Reels, TikTok and ads. Demos, reviews, unboxing, tutorials and lifestyle content.'),tag:t('Movimiento + narrativa','Movement + storytelling')},
+  {name:t('Imagen que cuenta.','Images that tell a story.'),description:t('Fotografía de producto, detalles y escenas de uso real. Una identidad visual coherente con tu marca.','Product photography, details and real-life settings. A visual identity that fits your brand.'),tag:t('Producto + contexto','Product + context')},
+  {name:t('Una idea a tu medida.','An idea made for you.'),description:t('Del briefing a la entrega final: concepto, grabación, edición y revisión. Una propuesta según tus objetivos.','From brief to final delivery: concept, filming, editing and review. A proposal built around your goals.'),tag:t('Concepto + ejecución','Concept + execution')},
 ];
-const steps = [
- [t('Brief','Brief'),t('Me cuentas tus objetivos, producto y necesidades.','Tell me about your goals, product and needs.')],
- [t('Propuesta','Proposal'),t('Creo el concepto, estructura y enfoque del contenido.','I develop the concept, structure and approach for your content.')],
- [t('Creación','Creation'),t('Grabo y edito el contenido siguiendo el briefing.','I film and edit the content according to the brief.')],
- [t('Revisión','Review'),t('Revisas el contenido y realizamos los cambios acordados.','You review the content and we make the agreed changes.')],
- [t('Entrega','Delivery'),t('Entrego los archivos finales listos para publicar.','I deliver the final files, ready to publish.')]
-];
-const beautyPoints = [t('Conocimiento de producto','Product knowledge'),t('Creación de contenido para redes sociales','Social media content creation'),t('Comunicación cercana y auténtica','Relatable, authentic communication'),t('Enfoque en resultados','A focus on results')];
-const value = [t('Contenido natural y auténtico que conecta con tu audiencia','Natural, authentic content that connects with your audience'),t('Ideas creativas adaptadas a tus objetivos','Creative ideas tailored to your goals'),t('Vídeos optimizados para Reels, TikTok y anuncios','Videos optimized for Reels, TikTok and ads'),t('Entrega profesional, rápida y comunicativa','Professional, prompt delivery and clear communication'),t('Enfoque en resultados y aumento de conversiones','A focus on results and increasing conversions')];
-const examples = [
- {image:'sample-beauty',category:t('Belleza','Beauty'),format:t('Contenido para Ads','Ad content'),video:'perfume-joy',poster:'perfume-poster'},
- {image:'sample-coffee',category:t('Café','Coffee'),format:t('Vídeo review','Review video')},
- {image:'sample-food',category:t('Comida','Food'),format:t('Probando comida','Food tasting'),video:'testing-food',poster:'food-poster'},
- {image:'sample-fashion',category:t('Moda','Fashion'),format:t('Reel de moda','Fashion reel'),video:'fashion',poster:'fashion-poster'},
-];
-const moreExamples = [{image:'niche-travel',category:t('Viajes','Travel')},{image:'niche-car',category:t('Accesorios de coche','Car accessories')},{image:'niche-lifestyle',category:t('Estilo de vida','Lifestyle')},{image:'niche-tech',category:t('Tecnología','Tech')}];
-const logoAlt = 'Montse García · UGC Creator';
 ---
 <!doctype html>
 <html lang={lang}>
- <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content={t('Montse García, creadora UGC en Córdoba. Vídeos, fotografía y contenido auténtico para conectar con tu audiencia.','Montse García, UGC creator based in Córdoba, Spain. Authentic videos, photography and social content to connect with your audience.')} />
-  <meta name="theme-color" content="#f7f3f2" />
-  <title>{t('Montse García · Creadora UGC','Montse García · UGC Creator')}</title>
-  <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
-  <link rel="canonical" href={canonical} />
-  <link rel="alternate" hreflang="es" href={new URL(localeUrl('es'), Astro.site)} />
-  <link rel="alternate" hreflang="en" href={new URL(localeUrl('en'), Astro.site)} />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@400;500;600&family=Playfair+Display:wght@400;500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
- </head>
- <body style={`--portfolio-background: url('${asset('background.webp')}')`}>
-  <a class="skip" href="#main">{t('Saltar al contenido','Skip to content')}</a>
-  <header class="header">
-   <a href="#home" class="wordmark" aria-label={logoAlt}><img src={asset('logo.webp')} alt={logoAlt} width="160" height="58" /></a>
-   <nav aria-label={t('Navegación principal','Main navigation')}>
-    <a href="#about">{t('Sobre mí','About')}</a><a href="#services">{t('Servicios','Services')}</a><a href="#work">{t('Contenido','Work')}</a><a href="#contact">{t('Contacto','Contact')}</a>
-   </nav>
-   <div class="languages" aria-label={t('Seleccionar idioma','Select language')}>
-    <a href={localeUrl('es')} lang="es" hreflang="es" data-language aria-current={lang==='es'?'page':undefined}>ES</a><span>/</span><a href={localeUrl('en')} lang="en" hreflang="en" data-language aria-current={lang==='en'?'page':undefined}>EN</a>
-   </div>
-  </header>
-  <main id="main">
-   <section id="home" class="section hero split">
-    <div class="hero-copy">
-     <p class="eyebrow">{t('Portfolio · Creadora de contenido','Portfolio · Content creator')}</p>
-     <h1>MONTSERRAT <span>GARCÍA</span></h1>
-     <p class="signature">UGC Creator</p>
-     <p class="hero-intro">{t('Contenido auténtico que','Authentic content that')}<br /><strong>{t('conecta con tu audiencia','connects with your audience')}</strong> <img class="heart" src={asset('heart.webp')} alt="" /></p>
-     <div class="hero-links"><a href={instagram} target="_blank" rel="noopener noreferrer">Instagram · @montsegarcia_ugc ↗</a><a href={mail}>montsegarciaugc@gmail.com ↗</a><span>{t('Córdoba, España','Córdoba, Spain')}</span></div>
-     <a class="button" href="#work">{t('Descubre mi contenido','Explore my content')} <span>↗</span></a>
-    </div>
-    <img class="hero-photo" src={asset('hero.webp')} alt={t('Montse García sosteniendo una taza de café','Montse García holding a cup of coffee')} fetchpriority="high" width="715" height="1053" />
-   </section>
-   <section id="about" class="section about">
-    <div class="split"><div><p class="eyebrow">01 / {t('Sobre mí','About me')}</p><h2>{t('¡HOLA! SOY','HELLO! I’M')} <em>Montse</em></h2><p>{t('Creadora de contenido UGC apasionada por el mundo digital y por ayudar a marcas a conectar de forma auténtica con su audiencia.','A UGC content creator passionate about the digital world and helping brands connect authentically with their audiences.')}</p><p>{t('Mi objetivo es crear contenido natural, creativo y estratégico que genere confianza, enganche y aumente conversiones.','My goal is to create natural, creative and strategic content that builds trust, engages people and increases conversions.')}</p></div><img class="about-photo" src={asset('about.webp')} alt={t('Composición de café, cuadernos rosas y flores','Coffee, pink notebooks and flowers')} loading="lazy" width="728" height="813" /></div>
-    <div class="traits">{traits.map((trait,i)=><div><span aria-hidden="true">{['✧','♡','☆','◎'][i]}</span><p>{trait}</p></div>)}</div>
-   </section>
-   <section id="ugc" class="section split ugc">
-    <div><p class="eyebrow">02 / {t('Conexión real','Real connection')}</p><h2>{t('¿QUÉ ES EL','WHAT IS')} <em>UGC?</em></h2><p>{t('El User Generated Content es contenido creado por personas reales para que las marcas puedan mostrar sus productos de una forma natural, cercana y auténtica.','User Generated Content is content created by real people so brands can showcase their products in a natural, relatable and authentic way.')}</p><h3 class="pink">{t('¿POR QUÉ FUNCIONA?','WHY DOES IT WORK?')}</h3><ul class="checklist">{reasons.map(reason=><li>{reason}</li>)}</ul></div>
-    <div class="featured-video"><VideoCard src={asset('perfume-joy.mp4')} poster={asset('perfume-poster.webp')} label={t('Perfume Joy de Mary Kay','Mary Kay Joy perfume')} lang={lang} /></div>
-   </section>
-   <section id="niches" class="section centered">
-    <p class="eyebrow">03 / {t('Mi universo creativo','My creative world')}</p><h2>{t('NICHOS EN LOS QUE','NICHES I CREATE')}<em>{t('creo contenido','content for')}</em></h2>
-    <div class="niches">{niches.map(([image,name])=><div><img src={asset(`niche-${image}.webp`)} alt="" loading="lazy" width="160" height="160" /><h3>{name}</h3></div>)}</div>
-    <p class="section-note">{t('Me adapto a diferentes productos y audiencias creando contenido visual, atractivo y auténtico.','I adapt to different products and audiences, creating visual, engaging and authentic content.')}</p>
-   </section>
-   <section id="services" class="section services">
-    <p class="eyebrow">04 / {t('Servicios','Services')}</p><h2 class="centered">{t('MIS SERVICIOS','MY SERVICES')}</h2>
-    <div class="services-grid">{services.map(service=><article><span class="service-icon" aria-hidden="true">{service.icon}</span><h3>{service.title}</h3><ul>{service.items.map(item=><li>{item}</li>)}</ul></article>)}</div>
-    <p class="ribbon"><span aria-hidden="true">♡</span>{t('Contenido pensado para conectar, inspirar y convertir.','Content designed to connect, inspire and convert.')}</p>
-   </section>
-   <section id="process" class="section split process">
-    <div><p class="eyebrow">05 / {t('Proceso de trabajo','The process')}</p><h2>{t('ASÍ TRABAJO','HOW I WORK')}<em>{t('contigo','with you')}</em></h2><ol class="steps">{steps.map(([title,text],i)=><li><span>{String(i+1).padStart(2,'0')}</span><div><h3>{title}</h3><p>{text}</p></div></li>)}</ol></div>
-    <img class="editorial-photo" src={asset('process.webp')} alt={t('Cuaderno, bolígrafo y café junto a un portátil','Notebook, pen and coffee beside a laptop')} loading="lazy" width="847" height="833" />
-   </section>
-   <section id="work" class="section work centered">
-    <p class="eyebrow">06 / {t('Portfolio','Portfolio')}</p><h2>{t('ALGUNOS EJEMPLOS','A FEW EXAMPLES')}<em>{t('de contenido','of my content')}</em></h2>
-    <div class="examples">{examples.map(example=><article class="example">{example.video ? <VideoCard src={asset(`${example.video}.mp4`)} poster={asset(`${example.poster}.webp`)} label={`${example.category} · ${example.format}`} lang={lang} /> : <button class="image-preview" data-image={asset(`${example.image}.webp`)} data-caption={`${example.category} · ${example.format}`} aria-label={t(`Ampliar fotografía de ${example.category.toLowerCase()}`,`Enlarge ${example.category.toLowerCase()} photograph`)}><img src={asset(`${example.image}.webp`)} alt={example.category} loading="lazy" width="390" height="405" /><span aria-hidden="true">↗</span></button>}<div class="example-caption"><h3>{example.category}</h3><p>{example.format}</p></div></article>)}</div>
-    <p class="ribbon">{t('Contenido de muestra creado para demostrar estilo, creatividad y enfoque en resultados.','Sample content created to showcase style, creativity and a focus on results.')}</p>
-   </section>
-   <section id="more-work" class="section work centered">
-    <p class="eyebrow">07 / {t('Más inspiración','More inspiration')}</p><h2>{t('ALGUNOS EJEMPLOS','A FEW EXAMPLES')}<em>{t('de contenido','of my content')}</em></h2>
-    <div class="examples secondary">{moreExamples.map(example=><article class="example"><button class="image-preview" data-image={asset(`${example.image}.webp`)} data-caption={example.category} aria-label={t(`Ampliar imagen: ${example.category}`,`Enlarge image: ${example.category}`)}><img src={asset(`${example.image}.webp`)} alt={example.category} loading="lazy" width="253" height="253" /><span aria-hidden="true">↗</span></button><div class="example-caption"><h3>{example.category}</h3><p>{t('Inspiración visual','Visual inspiration')}</p></div></article>)}</div>
-    <p class="section-note">{t('Contenido de muestra creado para demostrar estilo, creatividad y enfoque en resultados.','Sample content created to showcase style, creativity and a focus on results.')}</p>
-   </section>
-   <section id="beauty" class="section split">
-    <div><p class="eyebrow">08 / {t('Experiencia','Experience')}</p><h2>{t('EXPERIENCIA EN','EXPERIENCE IN')}<em>beauty</em></h2><h3 class="pink">MARY KAY <span aria-hidden="true">♡</span></h3><p>{t('Experiencia creando contenido y comunicando productos de belleza a través de mi experiencia como consultora.','Experience creating content and communicating beauty products through my work as a consultant.')}</p><ul class="checklist">{beautyPoints.map(point=><li>{point}</li>)}</ul></div>
-    <figure><img class="editorial-photo" src={asset('beauty.webp')} alt={t('Productos de belleza Mary Kay sobre una bandeja','Mary Kay beauty products on a tray')} loading="lazy" width="824" height="968" /><figcaption>{t('Contenido de muestra creado con productos Mary Kay.','Sample content created with Mary Kay products.')}</figcaption></figure>
-   </section>
-   <section id="value" class="section split value">
-    <div><p class="eyebrow">09 / {t('Tu marca, mi enfoque','Your brand, my approach')}</p><h2>{t('¿QUÉ PUEDO APORTAR','WHAT CAN I BRING')}<em>{t('a tu marca?','to your brand?')}</em></h2><ul class="value-list">{value.map((item,i)=><li><span aria-hidden="true">{['♡','✧','▷','◎','↗'][i]}</span>{item}</li>)}</ul></div>
-    <div class="featured-video"><VideoCard src={asset('testing-food.mp4')} poster={asset('food-poster.webp')} label={t('Contenido UGC probando comida','Food tasting UGC content')} lang={lang} /></div>
-   </section>
-   <section id="brands" class="section brands">
-    <div class="split"><div><p class="eyebrow">10 / {t('Marcas','Brands')}</p><h2>{t('MARCAS CON LAS QUE','BRANDS I HAVE')}<em>{t('he trabajado','worked with')}</em></h2><div class="brand-seal">MARY<br />KAY</div><p>{t('Gracias a mi experiencia como consultora, conozco a fondo la marca y sus productos, creando contenido que transmite confianza y destaca sus beneficios.','Through my experience as a consultant, I know the brand and its products in depth, creating content that builds trust and highlights their benefits.')}</p></div><img class="editorial-photo" src={asset('brand.webp')} alt={t('Colección de productos Mary Kay','Collection of Mary Kay products')} loading="lazy" width="892" height="766" /></div>
-    <p class="closing-line">{t('¡Y vamos a por muchas más!','And here’s to many more!')} ♡</p>
-   </section>
-   <section id="custom" class="section centered custom">
-    <p class="eyebrow">11 / {t('A tu medida','Made for you')}</p><h2>{t('SERVICIOS','SERVICES')}<em>{t('personalizados','tailored to you')}</em></h2><span class="custom-heart" aria-hidden="true">♡</span><p class="section-note">{t('Cada proyecto es único. Me adapto a las necesidades de tu marca para crear el contenido perfecto para ti.','Every project is unique. I adapt to your brand’s needs to create the perfect content for you.')}</p><a class="button" href={mail}>{t('Escríbeme y te envío una propuesta personalizada','Get in touch for a tailored proposal')} ↗</a>
-   </section>
-   <section id="collaborate" class="section split collaborate">
-    <div><p class="eyebrow">12 / {t('Tu próximo proyecto','Your next project')}</p><h2>{t('¿CREAMOS ALGO','SHALL WE CREATE')}<em>{t('juntos?','something together?')}</em></h2><p>{t('Si buscas contenido que muestre tu producto de forma auténtica, creativa y que realmente conecte con tu audiencia, estaré encantada de trabajar contigo.','If you’re looking for content that showcases your product authentically and creatively, and truly connects with your audience, I’d love to work with you.')}</p><a class="text-link" href={mail}>{t('¡Hablemos!','Let’s talk!')} ↗</a><img class="section-logo" src={asset('logo.webp')} alt={logoAlt} loading="lazy" /></div><img class="editorial-photo" src={asset('collaboration.webp')} alt={t('Flores rosas, una taza y un cuaderno','Pink flowers, a cup and a notebook')} loading="lazy" width="917" height="1053" />
-   </section>
-   <section id="contact" class="section split contact">
-    <div><p class="eyebrow">13 / {t('Contacto','Contact')}</p><h2>{t('CONTACTO','GET IN TOUCH')} <span class="pink" aria-hidden="true">♡</span></h2><address><a href={mail}><span aria-hidden="true">✉</span>montsegarciaugc@gmail.com</a><a href={instagram} target="_blank" rel="noopener noreferrer"><span aria-hidden="true">◎</span>Instagram · @montsegarcia_ugc ↗</a><a href={tiktok} target="_blank" rel="noopener noreferrer"><span aria-hidden="true">♪</span>TikTok · @montsegarcia_ugc ↗</a><p><span aria-hidden="true">⌖</span>{t('Córdoba, España','Córdoba, Spain')}</p></address><p>{t('¿Tienes un proyecto en mente? Escríbeme y cuéntame qué necesitas.','Have a project in mind? Get in touch and tell me what you need.')}</p><img class="section-logo" src={asset('logo.webp')} alt={logoAlt} loading="lazy" /></div><img class="editorial-photo" src={asset('contact.webp')} alt={t('Móvil sobre un cuaderno rosa con flores secas','Phone on a pink notebook with dried flowers')} loading="lazy" width="686" height="1036" />
-   </section>
-   <section id="thanks" class="section split thanks">
-    <div><p class="eyebrow">14 / {t('Seguimos creando','Let’s keep creating')}</p><h2>{t('¡GRACIAS!','THANK YOU!')}</h2><p>{t('Tu proyecto puede ser el próximo.','Your project could be next.')}</p><p class="closing-line">{t('¡Vamos a hacerlo increíble!','Let’s make it amazing!')}</p><img class="section-logo" src={asset('logo.webp')} alt={logoAlt} loading="lazy" /></div><img class="thanks-photo" src={asset('thanks.webp')} alt={t('Flores delicadas sobre fondo rosa','Delicate flowers against a pink background')} loading="lazy" width="596" height="1035" />
-   </section>
-  </main>
-  <footer><span>© {new Date().getFullYear()} Montse García</span><a href={instagram} target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href={tiktok} target="_blank" rel="noopener noreferrer">TikTok ↗</a><a href="#home">{t('Volver arriba','Back to top')} ↑</a></footer>
-  <dialog id="image-dialog" aria-label={t('Vista ampliada de la imagen','Enlarged image view')}><button class="dialog-close" aria-label={t('Cerrar','Close')}>×</button><img alt="" /><p></p></dialog>
-  <script>
-   document.querySelectorAll<HTMLAnchorElement>('[data-language]').forEach(link => {
-    link.addEventListener('click', () => { link.hash = window.location.hash; });
-   });
-   const dialog = document.querySelector<HTMLDialogElement>('#image-dialog');
-   document.querySelectorAll<HTMLButtonElement>('[data-image]').forEach(button => {
-    button.addEventListener('click', () => {
-     if (!dialog) return;
-     const image = dialog.querySelector('img')!;
-     image.src = button.dataset.image!;
-     image.alt = button.dataset.caption!;
-     dialog.querySelector('p')!.textContent = button.dataset.caption!;
-     dialog.showModal();
-    });
-   });
-   dialog?.querySelector('button')?.addEventListener('click', () => dialog.close());
-   dialog?.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
-  </script>
- </body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={t('Entra en el universo de Montse García. Contenido UGC, vídeos y fotografía que convierten momentos cotidianos en conexiones reales.','Step into Montse García’s world. UGC, video and photography that turn everyday moments into real connections.')} />
+    <meta name="theme-color" content="#f4eee8" />
+    <title>{t('Montse García — Un universo de contenido','Montse García — A world of content')}</title>
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <link rel="canonical" href={new URL(localeUrl(lang), Astro.site)} />
+    <link rel="alternate" hreflang="es" href={new URL(localeUrl('es'), Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL(localeUrl('en'), Astro.site)} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <a class="skip" href="#main">{t('Saltar al contenido','Skip to content')}</a>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
+    <header class="header">
+      <a href="#home" class="wordmark" aria-label="Montse García"><span class="monogram">mg<span>✳</span></span><span>montse garcía<small>UGC & CREATIVE CONTENT</small></span></a>
+      <nav aria-label={t('Navegación principal','Main navigation')}><a href="#journey">{t('El universo','The world')}</a><a href="#work">{t('El trabajo','The work')}</a><a href="#about">{t('La creadora','The creator')}</a></nav>
+      <div class="header-end"><div class="languages" aria-label={t('Idioma','Language')}><a href={localeUrl('es')} lang="es" hreflang="es" data-language aria-current={lang==='es'?'page':undefined}>ES</a><span>/</span><a href={localeUrl('en')} lang="en" hreflang="en" data-language aria-current={lang==='en'?'page':undefined}>EN</a></div><a class="header-contact" href="#contact">{t('Hablemos','Let’s talk')} <span>↗</span></a></div>
+    </header>
+    <main id="main">
+      <section id="home" class="hero">
+        <div class="hero-set" aria-hidden="true"><img class="studio-background" src={asset('studio-world.png')} alt="" fetchpriority="high" /><div class="studio-tint"></div><div class="hero-orbit"></div></div>
+        <div class="hero-copy"><p class="eyebrow"><span class="tiny-star">✳</span> {t('El estudio de Montse · Córdoba, España','Montse’s studio · Córdoba, Spain')}</p><h1>{t('Lo cotidiano.','Everyday moments.')}<br /><em>{t('Extraordinario.','Extraordinary.')}</em></h1><p class="hero-description">{t('Transformo momentos reales en contenido que hace sentir, mirar y conectar.','I turn real moments into content that makes people feel, look and connect.')}</p><a class="round-link" href="#journey"><span class="round-arrow">↓</span><span>{t('Entra en mi universo','Step into my world')}<small>{t('Un recorrido, tres formas de conectar.','One journey, three ways to connect.')}</small></span></a></div>
+        <div class="hero-notes"><span>01 — {t('EL COMIENZO','THE BEGINNING')}</span><span>{t('Belleza · Moda · Vida real','Beauty · Fashion · Real life')}</span><a href="#work">{t('Ir directo al trabajo','Go straight to the work')} ↗</a></div>
+        <span class="hero-script" aria-hidden="true">made to feel.</span>
+      </section>
+
+      <section id="journey" class="journey" aria-label={t('Un recorrido por mi universo creativo','A journey through my creative world')}>
+        <div class="journey-stage">
+          <div class="journey-top"><span class="eyebrow">02 — {t('TRES FORMAS DE CONECTAR','THREE WAYS TO CONNECT')}</span><span class="journey-instruction">{t('Avanza y descubre ↓','Scroll to discover ↓')}</span></div>
+          <div class="journey-scenes">{projects.map((project,i)=><article class:list={['scene',`scene-${project.id}`,{'is-active':i===0}]} data-scene={i}>
+            <div class="scene-background" aria-hidden="true"><span class="scene-orbit"></span><span class="scene-word">{project.category}</span></div>
+            <div class="scene-visual"><img src={asset(`${project.poster}.webp`)} alt={t(`Fotograma del contenido de ${project.category.toLowerCase()}`,`Still from ${project.category.toLowerCase()} content`)} width="1080" height="1920" loading="lazy" /><span class="scene-frame-number" aria-hidden="true">0{i+1} / 03</span></div>
+            <div class="scene-copy"><p class="eyebrow">{project.category} / {project.format}</p><h2>{project.scene}<span class="scene-punctuation">.</span></h2><p>{project.sceneText}</p><a href={`#project-${project.id}`} class="line-link">{t('Ver la pieza','Watch the piece')} ↗</a></div>
+          </article>)}</div>
+          <div class="journey-bottom"><div class="scene-nav" aria-label={t('Escenas del recorrido','Journey scenes')}>{projects.map((project,i)=><button type="button" data-scene-target={i} aria-label={t(`Ir a la escena ${i+1}: ${project.scene}`,`Go to scene ${i+1}: ${project.scene}`)} aria-current={i===0?'step':undefined}><span>0{i+1}</span><span>{project.scene}</span></button>)}</div><span class="journey-signature">Montse García / {t('Universo creativo','Creative world')}</span></div>
+        </div>
+      </section>
+
+      <section id="work" class="section work">
+        <div class="section-heading"><p class="eyebrow">03 — {t('DEL UNIVERSO A LA PANTALLA','FROM MY WORLD TO YOUR SCREEN')}</p><div><h2>{t('Menos explicarlo.','Less explaining.')}<br /><em>{t('Más verlo.','More showing.')}</em></h2><p>{t('Tres piezas, tres registros. Así se ve mi forma de crear. Pulsa play y entra en la historia.','Three pieces, three moods. This is what my creative approach looks like. Press play and step into the story.')}</p></div></div>
+        <div class="projects">{projects.map((project,i)=><article id={`project-${project.id}`} class="project"><div class="project-top"><span>0{i+1}</span><span>{project.category}</span><span aria-hidden="true">↘</span></div><VideoCard src={asset(`${project.video}.mp4`)} poster={asset(`${project.poster}.webp`)} label={`${project.category} · ${project.format}`} lang={lang} /><div class="project-copy"><p class="project-format">{project.format}</p><h3>{project.title}</h3><p>{project.note}</p></div></article>)}</div>
+        <p class="work-note">{t('Piezas de muestra. Una mirada propia, aplicada a diferentes productos.','Sample pieces. One personal perspective, applied to different products.')}</p>
+      </section>
+
+      <section id="about" class="section about">
+        <div class="creator-portrait"><img src={asset('montse-portrait.webp')} alt={t('Montse García con una taza de café','Montse García with a cup of coffee')} width="1556" height="2074" loading="lazy" /><span class="portrait-tag">{t('La persona detrás de la cámara','The person behind the camera')} ↗</span><span class="portrait-stamp" aria-hidden="true">{t('CREAR','CREATE')}<br />{t('CONECTAR','CONNECT')}<br />{t('REPETIR','REPEAT')}</span></div>
+        <div class="creator-copy"><p class="eyebrow">04 — {t('LA CREADORA','THE CREATOR')}</p><h2>{t('Una mirada cercana.','A relatable perspective.')}<br /><em>{t('Una intención clara.','A clear intention.')}</em></h2><p class="creator-intro">{t('Soy Montse. Me gusta encontrar una buena historia en las cosas de todos los días.','I’m Montse. I like finding a good story in everyday things.')}</p><p>{t('Creo contenido natural, cuidado y pensado para tu marca. Mi experiencia como consultora de Mary Kay me ha enseñado a conocer un producto y comunicarlo de forma cercana.','I create natural, thoughtful content with your brand in mind. My experience as a Mary Kay consultant has taught me to understand products and communicate them in a relatable way.')}</p><div class="creator-facts"><span>{t('Desde Córdoba','Based in Córdoba')}</span><span>Beauty · Lifestyle · Fashion</span></div><a class="line-link" href={instagram} target="_blank" rel="noopener noreferrer">{t('Conóceme en Instagram','Meet me on Instagram')} ↗</a></div>
+      </section>
+
+      <section id="services" class="section services">
+        <div class="section-heading"><p class="eyebrow">05 — {t('CREAMOS CON INTENCIÓN','LET’S CREATE WITH INTENTION')}</p><div><h2>{t('Tu marca.','Your brand.')}<br /><em>{t('Mi siguiente historia.','My next story.')}</em></h2><p>{t('Una colaboración a medida, desde la primera idea hasta el archivo listo para publicar.','A tailored collaboration, from the first idea to the file ready to publish.')}</p></div></div>
+        <div class="service-list">{services.map((service,i)=><article><span class="service-number">0{i+1}</span><div><span class="service-tag">{service.tag}</span><h3>{service.name}</h3></div><p>{service.description}</p><span class="service-arrow" aria-hidden="true">↗</span></article>)}</div>
+        <div class="process-strip"><p>{t('Así lo hacemos','How we do it')}</p><span>{t('Nos conocemos','We connect')}</span><span aria-hidden="true">→</span><span>{t('Damos forma a la idea','We shape the idea')}</span><span aria-hidden="true">→</span><span>{t('Creo y revisamos','I create, we review')}</span><span aria-hidden="true">→</span><span>{t('Listo para publicar','Ready to publish')}</span></div>
+      </section>
+
+      <section id="contact" class="contact section">
+        <p class="eyebrow">06 — {t('LA SIGUIENTE ESCENA','THE NEXT SCENE')}</p><div class="contact-title"><h2>{t('¿Y si lo próximo','What if the next story')}<br /><em>{t('lo creamos juntos?','is one we create together?')}</em></h2><span aria-hidden="true">✳</span></div><a class="contact-email" href={mail}>montsegarciaugc@gmail.com <span>↗</span></a><div class="contact-bottom"><p>{t('Cuéntame tu idea. Encontramos la forma de contarla.','Tell me your idea. We’ll find the way to tell it.')}</p><div><a href={instagram} target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href={tiktok} target="_blank" rel="noopener noreferrer">TikTok ↗</a></div></div>
+      </section>
+    </main>
+    <footer><span>© {new Date().getFullYear()} Montse García</span><span>{t('Hecho para sentir. Creado para conectar.','Made to feel. Created to connect.')}</span><a href="#home">{t('Volver al comienzo','Back to the beginning')} ↑</a></footer>
+    <script>
+      import '../scripts/journey';
+      document.querySelectorAll<HTMLAnchorElement>('[data-language]').forEach(link => {
+        link.addEventListener('click', () => { link.hash = window.location.hash; });
+      });
+    </script>
+  </body>
 </html>
