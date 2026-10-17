@@ -1,73 +1,51 @@
-﻿# Portfolio de Montse García
+﻿# Montse García · Portfolio UGC
 
-Portfolio UGC en Astro con la dirección creativa «El estudio de Montse»: un recorrido visual de seis bloques, escenario original generado con IA y tres vídeos reales. El contenido parte de `external-assets/MONTSERRAT.pdf`, con la estructura simplificada y rediseñada.
-
-## Idiomas
-
-- `/montsegarciaugc.github.io/`: español.
-- `/montsegarciaugc.github.io/en/`: inglés.
-
-El selector ES/EN conserva el ancla de la sección actual. Los textos, metadatos, navegación y etiquetas de accesibilidad se generan en cada idioma desde `src/components/Portfolio.astro`. Las imágenes y los vídeos conservan su contenido original.
+Portfolio Astro en español e inglés. Cinco secciones: inicio, trabajos, sobre mí, servicios y contacto. Fotografías de `cafeteria-imgs/`, vídeos originales y texto breve.
 
 ## Desarrollo
 
 ```sh
-npm run dev -- --background
+npm install
+npm run dev -- --host 127.0.0.1 --port 4321 --background
 npm run astro -- dev status
 npm run astro -- dev logs
 npm run astro -- dev stop
+npm run build
 ```
 
-En PowerShell, usa `npm.cmd` si la política de ejecución impide usar `npm.ps1`. El comando de inicio muestra la URL y el puerto disponibles.
+En PowerShell, usar `npm.cmd` si la política bloquea `npm.ps1`. Vista previa: `http://127.0.0.1:4321/montsegarciaugc.github.io/`.
+
+## Imágenes y vídeos
+
+La composición utiliza fotografías estáticas en WebP y no carga vídeos de transición. Para preparar las fotografías:
 
 ```sh
-npm run build
-npm run preview
+node scripts/prepare-cafe-stills.mjs
 ```
 
-La compilación estática se genera en `dist/`.
+La selección visual está en `docs/creative-direction.md`. Los trabajos se reproducen al pulsar play y pausan al volver a pulsar, sin barra ni controles nativos. En móvil, la galería se desplaza horizontalmente.
+
+El generador `scripts/render-cafe-videos.py`, los clips y el componente de recorrido anteriores se conservan, pero no se utilizan en la página actual.
 
 ## GitHub Pages
 
-Repositorio público: https://github.com/msmc98/montsegarciaugc.github.io
+`origin`: https://github.com/msmc98/montsegarciaugc.github.io
 
-Dirección de publicación: https://msmc98.github.io/montsegarciaugc.github.io/
+Cada push a `main` activa `.github/workflows/deploy.yml`. En Settings → Pages, seleccionar **GitHub Actions**.
 
-El workflow `.github/workflows/deploy.yml` compila y despliega cada push a `main`. También se puede ejecutar desde Actions con `workflow_dispatch`. En Settings → Pages, la fuente de publicación debe ser **GitHub Actions**.
+Astro calcula dominio y prefijo a partir de `GITHUB_REPOSITORY`. Actualmente publica en `https://msmc98.github.io/montsegarciaugc.github.io/`. Tras transferir el repositorio a `montsegarciaugc`, publica en `https://montsegarciaugc.github.io/` sin modificar el código. La ruta inglesa añade `en/`.
 
-La configuración de Astro utiliza `GITHUB_REPOSITORY`, proporcionado por GitHub Actions, para calcular el propietario, el dominio y el prefijo de las rutas. Ahora, bajo `msmc98`, publica como sitio de proyecto con el prefijo `/montsegarciaugc.github.io/`. Después de transferir el repositorio a la cuenta `montsegarciaugc`, publica en `https://montsegarciaugc.github.io/`, con español en `/` e inglés en `/en/`, sin cambiar el código. Todas las rutas de recursos e idiomas se adaptan automáticamente.
-
-Después de la transferencia, comprobar que Pages utiliza GitHub Actions y hacer un push a `main` o ejecutar el workflow manualmente para publicar bajo el nuevo propietario. Las compilaciones locales usan como respaldo la ubicación actual en `msmc98`.
-
-Actualizar el remoto local después de la transferencia:
+Después de la transferencia:
 
 ```sh
 git remote set-url origin https://github.com/montsegarciaugc/montsegarciaugc.github.io.git
 ```
 
-Para subir el primer commit una vez revisados los archivos:
+## Archivos principales
 
-```sh
-git add .
-git commit -m "Create bilingual Montse Garcia UGC portfolio"
-git push -u origin main
-```
+- `src/components/Portfolio.astro`: contenido y traducciones.
+- `src/components/VideoCard.astro`: reproducción de los trabajos.
+- `src/styles/global.css`: composición de escritorio y móvil.
+- `scripts/prepare-cafe-stills.mjs`: preparación de fotografías.
 
-## Recursos y edición
-
-- `src/components/Portfolio.astro`: los seis bloques y los textos bilingües.
-- `src/scripts/journey.ts`: recorrido de tres escenas al avanzar, navegación por escenas y alternativa de movimiento reducido.
-- `src/styles/global.css`: paleta, tipografías y estilos adaptados a móvil.
-- `src/components/VideoCard.astro`: reproductor en tarjeta, con play y pausa al pulsar de nuevo; sin controles nativos ni mockups.
-- `public/media/`: recursos WebP extraídos del PDF y los tres MP4 suministrados.
-- `scripts/extract-assets.py`: extracción reproducible con PyMuPDF y Pillow instalados en `.tools/python`.
-
-Se han incluido los vídeos de perfume Joy, moda y probando comida. Cada tarjeta reproduce al pulsar el play y pausa al volver a pulsar sobre el vídeo. También funciona con Enter y Espacio. Al iniciar otro vídeo, el anterior se pausa. Los demás ejemplos disponibles son imágenes estáticas. Las fotografías se pueden ampliar con ratón o teclado y cerrar con Escape.
-
-Las fuentes Cormorant Garamond y DM Sans se cargan desde Google Fonts, con fuentes de sistema de respaldo. El escenario de entrada es un estudio imaginario creado con IA. El movimiento del recorrido se genera en la web; no es un vídeo de IA. La dirección para incorporar un clip generado está en `docs/creative-direction.md` y requiere conectar Runway.
-
-Contacto: montsegarciaugc@gmail.com. Instagram y TikTok: @montsegarcia_ugc.
-
-## Validación
-
-Verificado en Edge a 1440 y 390 px en ambos idiomas: seis bloques, tres escenas accesibles, imágenes cargadas, sin desbordamiento horizontal y tres vídeos disponibles. El recorrido mantiene el desplazamiento convencional y muestra todas las escenas sin animación cuando se prefiere movimiento reducido. Las tarjetas no tienen controles nativos ni marcos de móvil; play y pausa comprobados. La configuración de despliegue continúa adaptándose automáticamente al propietario del repositorio.
+Validado en Edge a 1440 y 390 px en ambos idiomas: imágenes cargadas, ausencia de desbordamiento horizontal, reproducción y pausa de las tarjetas y acceso a los tres trabajos en móvil. La página no descarga los clips del recorrido anterior.

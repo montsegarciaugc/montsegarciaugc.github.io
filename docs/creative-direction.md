@@ -1,15 +1,17 @@
-# El estudio de Montse
+﻿# Dirección visual
 
-Un portfolio de seis bloques: entrada al universo, recorrido visual, tres trabajos reales, creadora, colaboración y contacto. Se eliminan las explicaciones genéricas de UGC, las galerías sin vídeos y los cierres repetidos.
+La versión actual utiliza fotografías estáticas, tipografía editorial y espacio entre bloques. No carga clips de transición ni controla vídeos mediante scroll. El contenido se limita a nombre, ocupación, trabajos, presentación breve, servicios y contacto, en español e inglés.
 
-El escenario arquitectónico de la portada es una imagen generada con IA, un estudio imaginario. No representa una localización real ni un trabajo contratado. Las tres piezas de portfolio son los vídeos originales proporcionados por Montse.
+| Sección | Recurso original | Uso |
+| --- | --- | --- |
+| Inicio | sala-3.jpg | Fotografía amplia junto al nombre |
+| Trabajos | estante-vacío.jpg | Un único fondo de madera para las tres tarjetas |
+| Sobre mí | Retrato original de Montse | Imagen y presentación breve |
+| Servicios | ventana-poyete.jpg | Fotografía junto a la lista de servicios |
+| Contacto | sunset-apaisado.jpg | Fotografía de fondo con enlaces legibles |
 
-El recorrido actual se anima con el scroll: acercamiento al escenario, tres atmósferas, profundidad de las imágenes y navegación por escenas. Respeta la preferencia de movimiento reducido, funciona con teclado y mantiene navegación convencional. Los vídeos de portfolio requieren pulsar play, no tienen barra de reproducción y pausan al volver a pulsar.
+`scripts/prepare-cafe-stills.mjs` prepara los WebP desde los originales sin ampliar las imágenes. Las tarjetas reproducen los vídeos originales con un botón de reproducción y pausa, sin controles nativos ni marcos de dispositivos.
 
-## Clip cinematográfico pendiente de conexión
+## Material anterior conservado
 
-Para incorporar un vídeo generado con IA se ha propuesto conectar Runway. No se ha generado ni añadido un clip de IA; el escenario actual es una imagen animada por la web.
-
-Referencia: `public/media/studio-world.png`.
-
-Dirección de un futuro clip: cámara que avanza suavemente a través del arco del estudio imaginario. La tela burdeos se mueve ligeramente y la luz cambia de forma sutil. Mantener materiales, geometría, pedestal y botella sin deformaciones; sin personas, textos ni marcas. Entre 6 y 8 segundos, paisaje 16:9. Debe usarse como recurso de ambientación, separado de las piezas reales de Montse.
+`CafeBackground.astro`, `cafe-scroll.ts`, `scripts/render-cafe-videos.py` y los clips generados se conservan como trabajo anterior, pero la página no los utiliza. Esos clips son montajes con movimiento y fundidos entre fotografías, no recorridos sintetizados mediante IA.

@@ -1,0 +1,78 @@
+{
+  "fps": 24,
+  "frames": 73,
+  "method": "camera crop and dissolve",
+  "sources": [
+    "sala-3.jpg",
+    "sala-completa.jpg",
+    "estanteria-top-sala.jpg",
+    "ventana-poyete.jpg",
+    "sunset-apaisado.jpg"
+  ],
+  "clips": [
+    {
+      "file": "transition-01-desktop.mp4",
+      "variant": "desktop",
+      "from": 0,
+      "to": 1,
+      "firstHash": "5dd9ce8c0a41ae22949a3b39f1240f42df89c7c3233b4baa35a9bd6440547e67",
+      "lastHash": "4d342b2db6c01d179a99b3e79ee493afd6c5666ef77f6f83f4c278331fbb16fd"
+    },
+    {
+      "file": "transition-02-desktop.mp4",
+      "variant": "desktop",
+      "from": 1,
+      "to": 2,
+      "firstHash": "4d342b2db6c01d179a99b3e79ee493afd6c5666ef77f6f83f4c278331fbb16fd",
+      "lastHash": "0ebd7361711faf6b27e2fb966df869a33969347e97b2d3e93370f5129c3cb896"
+    },
+    {
+      "file": "transition-03-desktop.mp4",
+      "variant": "desktop",
+      "from": 2,
+      "to": 3,
+      "firstHash": "0ebd7361711faf6b27e2fb966df869a33969347e97b2d3e93370f5129c3cb896",
+      "lastHash": "cd74d7e22298a35053996fae33be453725330d48ed4671539b5880f532be6368"
+    },
+    {
+      "file": "transition-04-desktop.mp4",
+      "variant": "desktop",
+      "from": 3,
+      "to": 4,
+      "firstHash": "cd74d7e22298a35053996fae33be453725330d48ed4671539b5880f532be6368",
+      "lastHash": "777764ec3c7b81db533ee437d84d034874465fcfbe258e142e71b6509b0583f7"
+    },
+    {
+      "file": "transition-01-mobile.mp4",
+      "variant": "mobile",
+      "from": 0,
+      "to": 1,
+      "firstHash": "178f00012b8f1d717cadb2cf97d9bf2b842b9465cb5719192904f5deecdc0ab3",
+      "lastHash": "0712654be5add9fdf1c6daee04cd1ee6df7b619266d0d311e349c7b637610220"
+    },
+    {
+      "file": "transition-02-mobile.mp4",
+      "variant": "mobile",
+      "from": 1,
+      "to": 2,
+      "firstHash": "0712654be5add9fdf1c6daee04cd1ee6df7b619266d0d311e349c7b637610220",
+      "lastHash": "b3af197a23fb2e55f51f29e26373276f13df18ec6c5d8ffc24b5e7d0c7058e3e"
+    },
+    {
+      "file": "transition-03-mobile.mp4",
+      "variant": "mobile",
+      "from": 2,
+      "to": 3,
+      "firstHash": "b3af197a23fb2e55f51f29e26373276f13df18ec6c5d8ffc24b5e7d0c7058e3e",
+      "lastHash": "0623c9c87777a38f1a2e10edb11d8465b45a6248961be61c3f57e8fbb6aec9b7"
+    },
+    {
+      "file": "transition-04-mobile.mp4",
+      "variant": "mobile",
+      "from": 3,
+      "to": 4,
+      "firstHash": "0623c9c87777a38f1a2e10edb11d8465b45a6248961be61c3f57e8fbb6aec9b7",
+      "lastHash": "9c354151bbf536e21082814518b958548cb8131017d48d4827a71efc65cc37c4"
+    }
+  ]
+}
