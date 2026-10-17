@@ -1,6 +1,6 @@
 ﻿# Portfolio de Montse García
 
-Portfolio UGC en Astro con la dirección creativa «El estudio de Montse»: un recorrido visual de seis bloques, escenario original generado con IA y tres vídeos reales. El contenido parte de `external-assets/MONTSERRAT.pdf`, con la estructura simplificada y rediseñada.
+Portfolio UGC bilingüe en Astro, organizado por sectores siguiendo https://ugcspain-annasv.my.canva.site/. Utiliza las imágenes del portfolio original de Montse, los tres vídeos suministrados y la portada de los arcos.
 
 ## Idiomas
 
@@ -12,7 +12,7 @@ El selector ES/EN conserva el ancla de la sección actual. Los textos, metadatos
 ## Desarrollo
 
 ```sh
-npm run dev -- --background
+npm run dev -- --host 127.0.0.1 --port 4321 --background
 npm run astro -- dev status
 npm run astro -- dev logs
 npm run astro -- dev stop
@@ -55,8 +55,8 @@ git push -u origin main
 
 ## Recursos y edición
 
-- `src/components/Portfolio.astro`: los seis bloques y los textos bilingües.
-- `src/scripts/journey.ts`: recorrido de tres escenas al avanzar, navegación por escenas y alternativa de movimiento reducido.
+- `src/components/Portfolio.astro`: selector de diez nichos, vídeos por sector, fotos, experiencia, presentación y contacto bilingües.
+- `src/data/portfolio-extras.ts`: equipo confirmado y lista de testimonios, oculta hasta añadir opiniones reales.
 - `src/styles/global.css`: paleta, tipografías y estilos adaptados a móvil.
 - `src/components/VideoCard.astro`: reproductor en tarjeta, con play y pausa al pulsar de nuevo; sin controles nativos ni mockups.
 - `public/media/`: recursos WebP extraídos del PDF y los tres MP4 suministrados.
@@ -64,10 +64,17 @@ git push -u origin main
 
 Se han incluido los vídeos de perfume Joy, moda y probando comida. Cada tarjeta reproduce al pulsar el play y pausa al volver a pulsar sobre el vídeo. También funciona con Enter y Espacio. Al iniciar otro vídeo, el anterior se pausa. Los demás ejemplos disponibles son imágenes estáticas. Las fotografías se pueden ampliar con ratón o teclado y cerrar con Escape.
 
-Las fuentes Cormorant Garamond y DM Sans se cargan desde Google Fonts, con fuentes de sistema de respaldo. El escenario de entrada es un estudio imaginario creado con IA. El movimiento del recorrido se genera en la web; no es un vídeo de IA. La dirección para incorporar un clip generado está en `docs/creative-direction.md` y requiere conectar Runway.
+Las fuentes se cargan desde Google Fonts, con fuentes de sistema de respaldo. La portada integra la fotografía de Montse en un escenario imaginario. El recorrido de escenas se ha retirado. La dirección visual está documentada en `docs/creative-direction.md`.
 
 Contacto: montsegarciaugc@gmail.com. Instagram y TikTok: @montsegarcia_ugc.
 
 ## Validación
 
-Verificado en Edge a 1440 y 390 px en ambos idiomas: seis bloques, tres escenas accesibles, imágenes cargadas, sin desbordamiento horizontal y tres vídeos disponibles. El recorrido mantiene el desplazamiento convencional y muestra todas las escenas sin animación cuando se prefiere movimiento reducido. Las tarjetas no tienen controles nativos ni marcos de móvil; play y pausa comprobados. La configuración de despliegue continúa adaptándose automáticamente al propietario del repositorio.
+Comprobado en Edge a 1440 y 390 px, en español e inglés: diez accesos a nichos, tres vídeos sin controles nativos ni mockups, imágenes cargadas, ausencia de desbordamiento horizontal, reproducción y pausa, ampliación de fotos y cambio de idioma conservando el sector. Los sectores sin vídeo tienen una presentación compacta con contacto por correo. El equipo confirmado se muestra con tres imágenes transparentes. Las opiniones permanecen ocultas hasta recibir testimonios reales.
+
+
+## Texturas y colores
+
+Paleta actual: claro #fae6cf, oscuro #9d5753 y acentos cálidos de mármol. Dos patrones SVG propios en positivo y negativo con motivos en rombos, más visibles y próximos. Regeneración: node scripts/create-brand-textures.mjs. Estilos: src/styles/brand.css.
+
+El logo se ha recoloreado y los retratos de Montse se han editado sin pulsera, con una variante de cafetería y otra de estudio. src/data/portraits.ts permite intercambiarlos. Archivos finales y prompts: docs/brand-refresh-prompts.md. Fuentes del equipo: docs/equipment-assets.md.

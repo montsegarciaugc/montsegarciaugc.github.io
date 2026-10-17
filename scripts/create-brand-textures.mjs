@@ -1,0 +1,41 @@
+﻿import { mkdir, writeFile } from 'node:fs/promises';
+
+// Vector tiles stay crisp at the very small size used behind the content.
+// Bespoke MG monogram, coffee cup, four petals and an elongated sparkle.
+const motifs = `
+  <defs>
+    <g id="monogram" fill="none" stroke="currentColor" stroke-linejoin="round">
+      <path d="M0 28V0l12 20L24 0v28M-3 0h7M21 0h7M-3 28h7M21 28h7" stroke-width="1.35"/>
+      <path d="M36 10c-3-6-15-7-20 0-6 8-3 21 6 23 7 2 13-2 13-8v-4H25m10 0h4" stroke-width="1.5"/>
+    </g>
+    <g id="petals" fill="none" stroke="currentColor" stroke-width="1.1">
+      <path d="M0 0c-17-15-20 7 0 5 15 17 20-6 5-5C20-16-3-21 0 0ZM0 0c-16 15 7 20 5 5"/>
+      <circle cx="2.5" cy="2.5" r="2"/>
+    </g>
+    <g id="sparkle" fill="none" stroke="currentColor" stroke-width="1.1">
+      <path d="M0-16C2-4 4-2 13 0 4 2 2 4 0 16-2 4-4 2-13 0-4-2-2-4 0-16Z"/>
+    </g>
+    <g id="cup" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round">
+      <path d="M-10-4H8v8c0 12-18 12-18 0Zm18 2h3c9 0 9 10-3 10M-15 15h29M-5-10c-4-3 4-4 0-8M2-10c-4-3 4-4 0-8"/>
+    </g>
+  </defs>
+  <g color="INK" opacity="OPACITY">
+    <use href="#monogram" transform="translate(70 27) scale(1.1)"/>
+    <use href="#petals" transform="translate(267 42) scale(1.25)"/>
+    <use href="#sparkle" transform="translate(0 135) scale(1.25)"/>
+    <use href="#cup" transform="translate(180 136.5) scale(1.25)"/>
+    <use href="#sparkle" transform="translate(360 135) scale(1.25)"/>
+  </g>`;
+
+await mkdir('public/textures', { recursive: true });
+for (const [name, paper, ink, opacity] of [
+  ['positive', '#fae6cf', '#9d5753', '.25'],
+  ['negative', '#9d5753', '#fae6cf', '.28'],
+]) {
+  // Offset alternate rows by half a horizontal step: 90 × 90 diagonals.
+  // The sparkle is duplicated at the edges so the tile joins seamlessly.
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="360" height="180" viewBox="0 0 360 180"><title>Montse García · ${name}</title><rect width="360" height="180" fill="${paper}"/>${motifs.replace('INK', ink).replace('OPACITY', opacity)}</svg>`;
+  await writeFile(`public/textures/mg-${name}.svg`, svg);
+}
+
+
