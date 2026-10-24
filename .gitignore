@@ -25,3 +25,18 @@ pnpm-debug.log*
 
 # Local PDF extraction tools and reference renders
 .tools/
+
+# Persistent CMS data, authentication, sessions and backups
+private/
+uploads/
+backups/
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+*.tmp
+.env.*
+!.env.example
+
+# Generated public copies; original CMS assets and JSON must be committed
+/public/media/cms/

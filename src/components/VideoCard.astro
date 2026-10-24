@@ -2,17 +2,18 @@
 import '../styles/video.css';
 interface Props {
   src: string;
-  poster: string;
+  poster?: string;
+  mime?: string;
   label: string;
   lang: 'es' | 'en';
 }
-const { src, poster, label, lang } = Astro.props;
+const { src, poster, label, lang, mime = 'video/mp4' } = Astro.props;
 const playLabel = `${lang === 'es' ? 'Reproducir' : 'Play'}: ${label}`;
 const pauseLabel = `${lang === 'es' ? 'Pausar' : 'Pause'}: ${label}`;
 ---
 <div class="video-card" data-video-card>
   <video playsinline preload="none" poster={poster} aria-label={label}>
-    <source src={src} type="video/mp4" />
+    <source src={src} type={mime} />
   </video>
   <button
     class="video-toggle"

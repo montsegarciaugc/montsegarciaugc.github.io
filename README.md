@@ -1,80 +1,73 @@
-﻿# Portfolio de Montse García
+# Portfolio de Montse García · CMS con JSON
 
-Portfolio UGC bilingüe en Astro, organizado por sectores siguiendo https://ugcspain-annasv.my.canva.site/. Utiliza las imágenes del portfolio original de Montse, los tres vídeos suministrados y la portada de los arcos.
+Portfolio UGC bilingüe en Astro 7 con un CMS online que funciona en **GitHub Pages y Vercel estático**, sin base de datos ni servidor propio. Conserva la apariencia pública.
 
-## Idiomas
-
-- `/montsegarciaugc.github.io/`: español.
-- `/montsegarciaugc.github.io/en/`: inglés.
-
-El selector ES/EN conserva el ancla de la sección actual. Los textos, metadatos, navegación y etiquetas de accesibilidad se generan en cada idioma desde `src/components/Portfolio.astro`. Las imágenes y los vídeos conservan su contenido original.
+Las categorías y vídeos se guardan en src/data/portfolio.json. El panel administra esos archivos y los vídeos mediante la API de GitHub: cada guardado crea un commit y activa la publicación automática configurada en el repositorio. Nadie necesita editar el JSON a mano.
 
 ## Desarrollo
 
+Node 24 LTS (24.15 o superior, anterior a 25):
+
 ```sh
-npm run dev -- --host 127.0.0.1 --port 4321 --background
+npm ci
+npm run dev -- --background
 npm run astro -- dev status
 npm run astro -- dev logs
 npm run astro -- dev stop
 ```
 
-En PowerShell, usa `npm.cmd` si la política de ejecución impide usar `npm.ps1`. El comando de inicio muestra la URL y el puerto disponibles.
+En PowerShell puedes usar npm.cmd. El servidor muestra el prefijo y puerto reales; por defecto la URL local es http://localhost:4321/montsegarciaugc.github.io/ y el panel está en /montsegarciaugc.github.io/admin/.
+
+El CMS, incluso al abrirlo localmente, guarda en el repositorio remoto que selecciones. Las pruebas usan una API simulada y no escriben en GitHub. Para ver localmente cambios guardados online, actualiza tu checkout antes de volver a compilar.
+
+## Publicar en GitHub Pages
+
+1. Sube estos cambios, incluidos src/data/portfolio.json y cms-media/, al repositorio de GitHub.
+2. En Settings → Pages selecciona **GitHub Actions** como origen.
+3. El workflow .github/workflows/deploy.yml valida y publica los pushes a main.
+4. Abre la URL de Pages y añade admin/ para entrar al CMS.
+
+En el repositorio actual, las rutas previstas son:
+
+- Español: https://msmc98.github.io/montsegarciaugc.github.io/
+- Inglés: https://msmc98.github.io/montsegarciaugc.github.io/en/
+- CMS: https://msmc98.github.io/montsegarciaugc.github.io/admin/
+
+No se ha realizado ningún push ni despliegue desde esta sesión. El dominio y el prefijo se calculan con GITHUB_REPOSITORY; tras transferir el repositorio, se adaptan al nuevo propietario. El workflow usa main; cambia también PUBLIC_CMS_BRANCH si eliges otra rama y ajusta el workflow a esa rama.
+
+## Entrar al CMS
+
+Genera un **fine-grained personal access token** desde tu cuenta de GitHub, selecciona únicamente este repositorio y concede **Contents: Read and write**. Usa una caducidad apropiada. Entra al panel, confirma repositorio y rama e introduce el token. No lo envíes por chat ni lo añadas a archivos o variables PUBLIC_.
+
+El token permanece solo en memoria de la pestaña. No hay contraseña propia, cookies de autenticación, localStorage ni sessionStorage. Al cerrar sesión, recargar o abandonar la página se vuelve a pedir. GitHub controla los permisos y permite revocarlo. La página del panel es pública; guardar requiere autorización de GitHub.
+
+Permite crear y editar categorías y vídeos, traducciones ES/EN, orden, activación/publicación, sustitución de archivos, portadas, papelera y restauración. Los cambios públicos aparecen al finalizar el despliegue; guardar en GitHub no significa que la web ya se haya actualizado.
+
+## Vercel
+
+Importa el mismo repositorio como proyecto Astro estático. Configura BASE_PATH=/ y SITE_URL con tu dominio de producción. PUBLIC_CMS_REPOSITORY y PUBLIC_CMS_BRANCH definen los valores iniciales del panel; no son secretos. vercel.json ya define npm run build y dist. Conecta la rama main para publicar los commits del CMS. La arquitectura no necesita Functions, Blob ni base de datos. La gratuidad depende de los límites y condiciones del plan de Vercel; Hobby limita el uso a proyectos personales no comerciales.
+
+## Verificación
 
 ```sh
+npm run check
+npm test
 npm run build
-npm run preview
+npm run test:integration
 ```
 
-La compilación estática se genera en `dist/`.
+Los tests usan fixtures independientes: no fallan al editar tus títulos o crear nuevas categorías desde el CMS. Comprueban esquema, visibilidad, rutas, archivos, guardado atómico en GitHub, conflictos y permisos, además de la salida estática y sus recursos.
 
-## GitHub Pages
+## Archivos principales
 
-Repositorio público: https://github.com/msmc98/montsegarciaugc.github.io
+- src/data/portfolio.json: fuente de categorías y vídeos.
+- cms-media/: originales de vídeos y portadas, incluidos los borradores y la papelera.
+- src/lib/: validación, selección pública y acceso a la API de GitHub.
+- src/scripts/admin.ts y src/components/admin/App.astro: panel sin frameworks adicionales.
+- src/components/Portfolio.astro y VideoCard.astro: diseño y reproductor públicos conservados.
+- scripts/prepare-media.ts: exporta solo los archivos publicados a public/media/cms/, un directorio generado que no se versiona.
+- scripts/import-sqlite.ts: migración local opcional de la implementación anterior; no se usa al publicar ni ejecutar la web.
 
-Dirección de publicación: https://msmc98.github.io/montsegarciaugc.github.io/
+Los tres vídeos útiles se han conservado. Las copias redundantes de seed/media se han retirado tras verificar sus hashes; los antiguos datos privados locales se conservan como respaldo y no se publican.
 
-El workflow `.github/workflows/deploy.yml` compila y despliega cada push a `main`. También se puede ejecutar desde Actions con `workflow_dispatch`. En Settings → Pages, la fuente de publicación debe ser **GitHub Actions**.
-
-La configuración de Astro utiliza `GITHUB_REPOSITORY`, proporcionado por GitHub Actions, para calcular el propietario, el dominio y el prefijo de las rutas. Ahora, bajo `msmc98`, publica como sitio de proyecto con el prefijo `/montsegarciaugc.github.io/`. Después de transferir el repositorio a la cuenta `montsegarciaugc`, publica en `https://montsegarciaugc.github.io/`, con español en `/` e inglés en `/en/`, sin cambiar el código. Todas las rutas de recursos e idiomas se adaptan automáticamente.
-
-Después de la transferencia, comprobar que Pages utiliza GitHub Actions y hacer un push a `main` o ejecutar el workflow manualmente para publicar bajo el nuevo propietario. Las compilaciones locales usan como respaldo la ubicación actual en `msmc98`.
-
-Actualizar el remoto local después de la transferencia:
-
-```sh
-git remote set-url origin https://github.com/montsegarciaugc/montsegarciaugc.github.io.git
-```
-
-Para subir el primer commit una vez revisados los archivos:
-
-```sh
-git add .
-git commit -m "Create bilingual Montse Garcia UGC portfolio"
-git push -u origin main
-```
-
-## Recursos y edición
-
-- `src/components/Portfolio.astro`: selector de diez nichos, vídeos por sector, fotos, experiencia, presentación y contacto bilingües.
-- `src/data/portfolio-extras.ts`: equipo confirmado y lista de testimonios, oculta hasta añadir opiniones reales.
-- `src/styles/global.css`: paleta, tipografías y estilos adaptados a móvil.
-- `src/components/VideoCard.astro`: reproductor en tarjeta, con play y pausa al pulsar de nuevo; sin controles nativos ni mockups.
-- `public/media/`: recursos WebP extraídos del PDF y los tres MP4 suministrados.
-- `scripts/extract-assets.py`: extracción reproducible con PyMuPDF y Pillow instalados en `.tools/python`.
-
-Se han incluido los vídeos de perfume Joy, moda y probando comida. Cada tarjeta reproduce al pulsar el play y pausa al volver a pulsar sobre el vídeo. También funciona con Enter y Espacio. Al iniciar otro vídeo, el anterior se pausa. Los demás ejemplos disponibles son imágenes estáticas. Las fotografías se pueden ampliar con ratón o teclado y cerrar con Escape.
-
-Las fuentes se cargan desde Google Fonts, con fuentes de sistema de respaldo. La portada integra la fotografía de Montse en un escenario imaginario. El recorrido de escenas se ha retirado. La dirección visual está documentada en `docs/creative-direction.md`.
-
-Contacto: montsegarciaugc@gmail.com. Instagram y TikTok: @montsegarcia_ugc.
-
-## Validación
-
-Comprobado en Edge a 1440 y 390 px, en español e inglés: diez accesos a nichos, tres vídeos sin controles nativos ni mockups, imágenes cargadas, ausencia de desbordamiento horizontal, reproducción y pausa, ampliación de fotos y cambio de idioma conservando el sector. Los sectores sin vídeo tienen una presentación compacta con contacto por correo. El equipo confirmado se muestra con tres imágenes transparentes. Las opiniones permanecen ocultas hasta recibir testimonios reales.
-
-
-## Texturas y colores
-
-Paleta actual: claro #fae6cf, oscuro #9d5753 y acentos cálidos de mármol. Dos patrones SVG propios en positivo y negativo con motivos en rombos, más visibles y próximos. Regeneración: node scripts/create-brand-textures.mjs. Estilos: src/styles/brand.css.
-
-El logo se ha recoloreado y los retratos de Montse se han editado sin pulsera, con una variante de cafetería y otra de estudio. src/data/portraits.ts permite intercambiarlos. Archivos finales y prompts: docs/brand-refresh-prompts.md. Fuentes del equipo: docs/equipment-assets.md.
+Guía de uso, seguridad, límites y restauración: [docs/CMS.md](docs/CMS.md). Las variables públicas disponibles están en [.env.example](.env.example).

@@ -1,31 +1,23 @@
 ---
 import '../styles/global.css';
 import VideoCard from './VideoCard.astro';
+import data from '../data/portfolio.json';
+import { portfolio, validateContent } from '../lib/content.ts';
+validateContent(data);
 import '../styles/brand.css';
 import { testimonials, equipment } from '../data/portfolio-extras';
 import { portraits } from '../data/portraits';
 interface Props { lang: 'es' | 'en' }
 const { lang } = Astro.props;
 const t = (es: string, en: string) => lang === 'es' ? es : en;
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const asset = (name: string) => `${base}media/${name}`;
 const localeUrl = (locale: 'es' | 'en') => `${base}${locale === 'en' ? 'en/' : ''}`;
 const canonical = new URL(localeUrl(lang), Astro.site);
 const mail = 'mailto:montsegarciaugc@gmail.com';
 const instagram = 'https://www.instagram.com/montsegarcia_ugc/';
 const tiktok = 'https://www.tiktok.com/@montsegarcia_ugc';
-const niches = [
- {id:'belleza',name:t('Belleza','Beauty'),formats:t('Maquillaje, skincare y perfume.','Makeup, skincare and perfume.'),project:{video:'perfume-joy',poster:'perfume-poster',title:'Joy · Mary Kay',format:t('Contenido para Ads','Ad content')}},
- {id:'cuidado-capilar',name:t('Cuidado capilar','Haircare'),formats:t('Rutinas, tutoriales y producto en uso.','Routines, tutorials and products in use.')} ,
- {id:'tecnologia',name:t('Tecnología','Technology'),formats:t('Unboxing, demostraciones y reviews.','Unboxing, demos and reviews.')} ,
- {id:'salud',name:t('Salud','Health'),formats:t('Hábitos cotidianos y experiencias de uso.','Everyday habits and personal experiences.')} ,
- {id:'alimentacion',name:t('Alimentación','Food'),formats:t('Probando productos, recetas y experiencias.','Product tastings, recipes and experiences.'),project:{video:'testing-food',poster:'food-poster',title:t('Probando comida','Food tasting'),format:t('Experiencia de producto','Product experience')}},
- {id:'bebidas',name:t('Bebidas','Drinks'),formats:t('Café, preparación y momentos de consumo.','Coffee, preparation and everyday moments.')} ,
- {id:'moda',name:t('Moda','Fashion'),formats:t('Looks, combinaciones y producto en movimiento.','Looks, styling and products in motion.'),project:{video:'fashion',poster:'fashion-poster',title:t('Un solo look','One look'),format:t('Reel de moda','Fashion reel')}},
- {id:'hogar',name:t('Hogar','Home'),formats:t('Decoración, organización y rutinas en casa.','Decor, organisation and home routines.')} ,
- {id:'servicios',name:t('Servicios','Services'),formats:t('Experiencias, visitas y demostraciones.','Experiences, visits and demonstrations.')} ,
- {id:'viajes',name:t('Viajes','Travel'),formats:t('Destinos, alojamientos y planes.','Destinations, stays and things to do.')} ,
-];
+const niches = portfolio(data, lang);
 const photos = [
  {image:'beauty.webp',caption:t('Belleza · Mary Kay','Beauty · Mary Kay')},
  {image:'sample-coffee.webp',caption:t('Bebidas · Café','Drinks · Coffee')},
@@ -73,9 +65,9 @@ const themeFor = (id: string) => (sectionOrder.indexOf(id) + 2) % 2 === 0 ? 'neg
     <img class="index-portrait" src={asset(portraits.sectors)} alt={t('Montse con una taza de café','Montse holding a cup of coffee')} width="1100" height="1466" loading="lazy" />
    </section>
    <section id="work" class="work" aria-label={t('Contenido por sectores','Content by sector')}>
-    {niches.map(niche=><section id={niche.id} data-theme={themeFor(niche.id)} class:list={['section','sector',{'sector-featured':!!niche.project,'sector-compact':!niche.project}]} aria-labelledby={`title-${niche.id}`}>
-     <div class="sector-heading"><h2 id={`title-${niche.id}`}>{niche.name}</h2>{!niche.project&&<p>{niche.formats}</p>}</div>
-     {niche.project ? <article class="project"><div class="project-label"><h3>{niche.project.title}</h3><p>{niche.project.format}</p></div><VideoCard src={asset(`${niche.project.video}.mp4`)} poster={asset(`${niche.project.poster}.webp`)} label={`${niche.name} · ${niche.project.format}`} lang={lang} /><p class="sample-note">{t('Pieza de muestra','Sample piece')}</p></article> : <a class="sector-contact" href={nicheMail(niche.name)}>{t('Crear contenido','Create content')} <span aria-hidden="true">↗</span></a>}
+    {niches.map(niche=><section id={niche.id} data-theme={themeFor(niche.id)} class:list={['section','sector',{'sector-featured':niche.projects.length > 0,'sector-compact':niche.projects.length === 0}]} aria-labelledby={`title-${niche.id}`}>
+     <div class="sector-heading"><h2 id={`title-${niche.id}`}>{niche.name}</h2>{niche.projects.length === 0&&<p>{niche.formats}</p>}</div>
+     {niche.projects.length ? <div class="sector-projects">{niche.projects.map(project => <article class="project"><div class="project-label"><h3>{project.title}</h3><p>{project.format}</p></div><VideoCard src={`${base}${project.src}`} poster={project.poster ? `${base}${project.poster}` : undefined} mime={project.mime} label={`${niche.name} · ${project.title}`} lang={lang} /><p class="sample-note">{t('Pieza de muestra','Sample piece')}</p></article>)}</div> : <a class="sector-contact" href={nicheMail(niche.name)}>{t('Crear contenido','Create content')} <span aria-hidden="true">↗</span></a>}
     </section>)}
    </section>
    <section id="photos" class="section photos" data-theme={themeFor('photos')} aria-labelledby="photos-title">
