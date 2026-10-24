@@ -3,15 +3,26 @@
   "type": "module",
   "version": "0.0.1",
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=24.15.0 <25"
   },
   "scripts": {
-    "dev": "astro dev",
+    "dev": "node scripts/prepare-media.ts && astro dev",
+    "prebuild": "node scripts/prepare-media.ts",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check",
+    "test": "node --test tests/*.test.ts",
+    "test:integration": "node scripts/test-integration.mjs",
+    "content:prepare": "node scripts/prepare-media.ts",
+    "content:import-sqlite": "node --env-file-if-exists=.env scripts/import-sqlite.ts"
   },
   "dependencies": {
     "astro": "^7.3.8"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@types/node": "^24.19.2",
+    "typescript": "^6.0.3"
   }
 }

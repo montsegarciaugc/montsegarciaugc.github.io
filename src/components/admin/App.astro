@@ -1,0 +1,11 @@
+---
+import '../../styles/admin.css';
+const repository=import.meta.env.PUBLIC_CMS_REPOSITORY||process.env.GITHUB_REPOSITORY||(process.env.VERCEL_GIT_REPO_OWNER&&process.env.VERCEL_GIT_REPO_SLUG?`${process.env.VERCEL_GIT_REPO_OWNER}/${process.env.VERCEL_GIT_REPO_SLUG}`:'msmc98/montsegarciaugc.github.io');
+const branch=import.meta.env.PUBLIC_CMS_BRANCH||'main';
+const base=import.meta.env.BASE_URL.replace(/\/?$/,'/');
+---
+<!doctype html><html lang="es"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="robots" content="noindex,nofollow"/><meta name="referrer" content="strict-origin"/><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://api.github.com; img-src 'self' blob: data:; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'"/><title>Estudio · Montse CMS</title></head>
+<body><div class="shell" id="cms" data-repository={repository} data-branch={branch} data-base={base}>
+<header><a class="brand" data-view="dashboard" href={`${base}admin/`}>Montse García <small>ESTUDIO · CMS</small></a><nav aria-label="Administración" hidden id="cms-nav"><a data-view="dashboard" href={`${base}admin/`}>Resumen</a><a data-view="videos" href={`${base}admin/videos/`}>Vídeos</a><a data-view="categories" href={`${base}admin/categories/`}>Categorías</a><a data-view="access" href={`${base}admin/access/`}>Acceso</a><a href={base} target="_blank" rel="noopener noreferrer">Ver portfolio ↗</a><button class="quiet" data-action="logout">Salir</button></nav></header>
+<main><div id="cms-message" role="status" tabindex="-1" aria-live="polite"></div><div id="cms-view"><p>Cargando el estudio…</p></div><noscript>Activa JavaScript para usar el CMS. El portfolio público funciona sin JavaScript.</noscript></main><footer>Portfolio UGC · Contenido en JSON · Los cambios se publican después de guardar.</footer></div>
+<script>import '../../scripts/admin';</script></body></html>
