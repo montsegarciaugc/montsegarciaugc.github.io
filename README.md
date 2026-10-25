@@ -70,4 +70,6 @@ Los tests usan fixtures independientes: no fallan al editar tus títulos o crear
 
 Los tres vídeos útiles se han conservado. Las copias redundantes de seed/media se han retirado tras verificar sus hashes; los antiguos datos privados locales se conservan como respaldo y no se publican.
 
-Guía de uso, seguridad, límites y restauración: [docs/CMS.md](docs/CMS.md). Las variables públicas disponibles están en [.env.example](.env.example).
+Guía de uso, seguridad, límites y restauración: [docs/CMS.md](docs/CMS.md). Las variables públicas disponibles están en [.env.example](.env.example)
+
+--By msmc98
